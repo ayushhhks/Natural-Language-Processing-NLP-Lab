@@ -1,0 +1,96 @@
+### WAP to remove digits from a given sentence using Greedy Tokenizer.
+
+def remove_digits(sentence: str) -> str:
+    result = []
+    for char in sentence:
+        # Greedy check: keep only non-digit characters
+        if not char.isdigit():
+            result.append(char)
+    return ''.join(result)
+
+# Main program
+if __name__ == "__main__":
+    # Take input from the user
+    sentence = input("Enter a sentence: ")
+    
+    # Process the sentence
+    cleaned_sentence = remove_digits(sentence)
+    
+    # Display results
+    print("Original sentence:", sentence)
+    print("Sentence without digits:", cleaned_sentence)
+
+## OUTPUT:
+Enter a sentence: hello22 Ayush 2004!
+Original sentence: hello22 Ayush 2004!
+Sentence without digits: hello Ayush !
+
+### 1. Write a program to count how many digits are present in a given sentence.
+
+def count_digits(sentence: str) -> int:
+    count = 0
+    for char in sentence:
+        if char.isdigit():  # Greedy check: keep scanning and count digits
+            count += 1
+    return count
+
+if __name__ == "__main__":
+    sentence = input("Enter a sentence: ")
+    print("Number of digits in the sentence:", count_digits(sentence))
+
+
+##OUTPUT
+Enter a sentence: AYush 12 hey34 2004
+Number of digits in the sentence: 8
+
+### 2. Extract and print all digits from a sentence using a greedy tokenizer
+
+def extract_digits(sentence: str) -> str:
+    digits = []
+    for char in sentence:
+        if char.isdigit():  # Greedy check: capture digits immediately
+            digits.append(char)
+    return ''.join(digits)
+
+if __name__ == "__main__":
+    sentence = input("Enter a sentence: ")
+    print("Digits extracted from the sentence:", extract_digits(sentence))
+
+##OUTPUT
+Enter a sentence: Ayush is 2004 hel90
+Digits extracted from the sentence: 200490
+
+###3. Greedy tokenization with priority for specific patterns (dates & emails)
+
+import re
+
+def greedy_tokenizer(sentence: str):
+    # Define prioritized patterns
+    date_pattern = r"\b\d{1,2}/\d{1,2}/\d{2,4}\b"
+    email_pattern = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+
+    # First, extract prioritized tokens
+    prioritized_tokens = []
+    for match in re.finditer(f"{date_pattern}|{email_pattern}", sentence):
+        prioritized_tokens.append(match.group())
+
+    # Remove those from the sentence
+    cleaned_sentence = re.sub(f"{date_pattern}|{email_pattern}", "", sentence)
+
+    # Greedy tokenize remaining characters (split by spaces)
+    general_tokens = cleaned_sentence.split()
+
+    return prioritized_tokens, general_tokens
+
+if __name__ == "__main__":
+    sentence = input("Enter a sentence: ")
+    dates_emails, others = greedy_tokenizer(sentence)
+    print("Prioritized tokens (dates & emails):", dates_emails)
+    print("General tokens:", others)
+
+##OUTPUT
+Enter a sentence: appoitnment on 13/06/26 by ayush4@gmail.com
+Prioritized tokens (dates & emails): ['13/06/26', 'ayush4@gmail.com']
+General tokens: ['appoitnment', 'on', 'by']
+
+
